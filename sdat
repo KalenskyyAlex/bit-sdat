@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+import argparse
+from pathlib import Path
+import sys
+from pipeline.pdf import GeneratePdfPipeline
+from pipeline.analyze import AnalyzePipeline
+
+DESCRIPTION = '''
+Static Document Analysis Tool
+
+Supported file types: 
+    - Office legacy CFBF format (.doc, .xsl, ...)
+    - Office OXML format (.docx, .xslx, ...)
+    - Portable Document Format (.pdf)
+'''
+
+def main():
+    parser = argparse.ArgumentParser(
+        description=DESCRIPTION,
+        usage='sdat [-h] {analyze, pdf} ...',
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    analyze_parser = subparsers.add_parser("analyze", help="Analyze the document", usage='sdat analyze <file> [--out [OUT]] [--pdf]')
+    analyze_parser.add_argument("file", nargs=1, type=str, help="file to be analyzed")
+    analyze_parser.add_argument("--out", "-o", type=str, help="path to output report")
+    analyze_parser.add_argument("--pdf", "-p", action="store_true", help="generate report as pdf")
+    
+    pdf_parser = subparsers.add_parser("pdf", help="Convert existing report to pdf", usage="sdat pdf <report> [--out [OUT]]")
+    pdf_parser.add_argument("report", nargs=1, type=str, help="report to be converted")
+    pdf_parser.add_argument("--out", "-o", type=str, help="path to output report")
+    
+    args = parser.parse_args()
+
+    if args.command == "pdf":
+        filename = Path(*args.report)
+        output = args.out if args.out else filename.with_suffix(".pdf")
+        
+        GeneratePdfPipeline(output, filename=filename).run()
+    elif args.command == "analyze":
+        filename = Path(*args.file)
+        output = args.out if args.out else filename.with_suffix(".report.json")
+        pdf = args.pdf
+        
+        AnalyzePipeline(filename, output, pdf).run()
+    else:
+        parser.print_help()
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
