@@ -1,14 +1,13 @@
 from typing import List
 from .. import IocHit, IocReport, Pipeline
-import sys, os, io, json, math, re, argparse, base64, binascii
-from . import entrophy_scan, macro_scan, network_scan, obfuscation_scan
+import sys, os, math, re
+from . import aggregate_report, entrophy_scan, macro_scan, network_scan, obfuscation_scan
 import olefile
 
 
 class CfbfPipeline(Pipeline):
     ENTROPY_THRESHHOLD = 7
     RE_EMBED_EXE = re.compile(r'[\w\-\./ ]+\.(exe|dll|scr|bat|ps1|js|vbs)', re.IGNORECASE)
-    RE_BASE64_CAND = re.compile(r'(?:[A-Za-z0-9+/]{40,}={0,2})')
     RE_MZ = re.compile(br'MZ')   # binary search
     
     def __init__(self, filename):
@@ -29,9 +28,9 @@ class CfbfPipeline(Pipeline):
             res = self.analyze_stream(data, entropy_threshold=CfbfPipeline.ENTROPY_THRESHHOLD)
             stream_results += res
 
-        report = self.aggregate_report(stream_results)
+        report = aggregate_report(stream_results)
 
-        print(report)
+        return report
 
     
     def analyze_stream(self, data: bytes, entropy_threshold: int) -> List[IocHit]:
@@ -49,7 +48,7 @@ class CfbfPipeline(Pipeline):
         # look for PK (zip) signatures (embedded docx/zip)
         if b'PK\x03\x04' in data:
             hit = {}
-            hit['name'] = 'embedded_MZ'
+            hit['name'] = 'embedded_PK_zip'
             hit['description'] = 'Document likely contains embedded CFBF/zip'
             hit['hits'] = len(re.compile(b'PK\x03\x04').findall(data))
             hit['score'] = 20
@@ -111,24 +110,3 @@ class CfbfPipeline(Pipeline):
             ))
             
         return hits
-    
-    def aggregate_report(self, stream_results: List[IocHit]) -> IocReport:
-        total_score = 0
-        for s in stream_results:
-            total_score += s.score * s.hits
-            
-        report = {
-            'hits': stream_results,
-            'total_score': total_score,
-            'verdict': 'unknown'
-        }
-        
-        if any(s.score >= 50 for s in stream_results):
-            report['verdict'] = 'high_risk'
-        elif any(s.score >= 25 for s in stream_results):
-            report['verdict'] = 'medium_risk'
-        else:
-            report['verdict'] = 'low_risk'
-            
-        return IocReport(**report)
-

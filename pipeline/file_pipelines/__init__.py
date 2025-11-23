@@ -2,7 +2,7 @@ from collections import Counter
 import math
 import re
 from typing import List
-from .. import IocHit
+from .. import IocHit, IocReport
 
 RE_AUTO_MACRO = re.compile(r'\b(AutoOpen|AutoExec|Document_Open|Workbook_Open|Auto_Open)\b', re.IGNORECASE)
 RE_SHELL_CALL = re.compile(r'\b(CreateObject|ShellExecute|Shell\(|WScript\.|Run\(|cmd\.exe|powershell|mshta|osascript)\b', re.IGNORECASE)
@@ -69,4 +69,23 @@ def obfuscation_scan(text: str) -> List[IocHit]:
         ))
         
     return hits
+
+def aggregate_report(stream_results: List[IocHit]) -> IocReport:
+    total_score = 0
+    for s in stream_results:
+        total_score += s.score * math.log10(s.hits)
+        
+    report = {
+        'hits': stream_results,
+        'total_score': total_score,
+        'verdict': 'unknown'
+    }
     
+    if any(s.score >= 50 for s in stream_results):
+        report['verdict'] = 'high_risk'
+    elif any(s.score >= 25 for s in stream_results):
+        report['verdict'] = 'medium_risk'
+    else:
+        report['verdict'] = 'low_risk'
+        
+    return IocReport(**report)
