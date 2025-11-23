@@ -1,16 +1,12 @@
 from typing import List
 from .. import IocHit, IocReport, Pipeline
 import sys, os, io, json, math, re, argparse, base64, binascii
-from . import entrophy_scan
+from . import entrophy_scan, macro_scan, network_scan, obfuscation_scan
 import olefile
 
 
 class CfbfPipeline(Pipeline):
     ENTROPY_THRESHHOLD = 7
-    RE_AUTO_MACRO = re.compile(r'\b(AutoOpen|AutoExec|Document_Open|Workbook_Open|Auto_Open)\b', re.IGNORECASE)
-    RE_SHELL_CALL = re.compile(r'\b(CreateObject|ShellExecute|Shell\(|WScript\.|Run\(|cmd\.exe|powershell|mshta|osascript)\b', re.IGNORECASE)
-    RE_URL = re.compile(r'https?://[^\s\'"<>]{5,}|ftp://[^\s\'"<>]{5,}', re.IGNORECASE)
-    RE_IP = re.compile(r'\b(?:\d{1,3}\.){3}\d{1,3}\b')
     RE_EMBED_EXE = re.compile(r'[\w\-\./ ]+\.(exe|dll|scr|bat|ps1|js|vbs)', re.IGNORECASE)
     RE_BASE64_CAND = re.compile(r'(?:[A-Za-z0-9+/]{40,}={0,2})')
     RE_MZ = re.compile(br'MZ')   # binary search
@@ -100,30 +96,10 @@ class CfbfPipeline(Pipeline):
     
     def score_stream_texts(self, text: str) -> List[IocHit]:
         hits = []
-        if CfbfPipeline.RE_AUTO_MACRO.search(text):
-            hits.append(IocHit(
-                name='auto_macro',
-                description='Suspisious macros are detected',
-                score=50,
-                hits=len(CfbfPipeline.RE_AUTO_MACRO.findall(text))
-            ))
-        if CfbfPipeline.RE_SHELL_CALL.search(text):
-            hits.append(IocHit(
-                name='shell_call',
-                description='Shell calls are detected',
-                score=20,
-                hits=len(CfbfPipeline.RE_SHELL_CALL.findall(text))
-            ))
-        if CfbfPipeline.RE_URL.search(text) or CfbfPipeline.RE_IP.search(text):
-            urls = list(set(CfbfPipeline.RE_URL.findall(text)))
-            ips = list(set(CfbfPipeline.RE_IP.findall(text)))
-            
-            hits.append(IocHit(
-                name='network_indicator',
-                description=f'Network indicators are detected: URLs: {urls}, IPs: {ips}',
-                score=15,
-                hits=len(CfbfPipeline.RE_URL.findall(text)) + len(CfbfPipeline.RE_IP.findall(text))
-            ))
+        hits += macro_scan(text)
+        hits += network_scan(text)
+        hits += obfuscation_scan(text)
+        
         if CfbfPipeline.RE_EMBED_EXE.search(text):
             fnames = list(set(CfbfPipeline.RE_EMBED_EXE.findall(text)))
 
@@ -132,15 +108,6 @@ class CfbfPipeline(Pipeline):
                 description=f'Embedded filenames are detected: {fnames}',
                 score=40,
                 hits=len(CfbfPipeline.RE_EMBED_EXE.findall(text))
-            ))
-        if CfbfPipeline.RE_BASE64_CAND.search(text):
-            b64s = list(set(CfbfPipeline.RE_BASE64_CAND.findall(text)))[:3]  # cap for brevity
-            
-            hits.append(IocHit(
-                name='base64_candidate',
-                description=f'Base64 candidates found (which could be a way to obfuscate content): {b64s}, ...',
-                score=15,
-                hits=len(CfbfPipeline.RE_BASE64_CAND.findall(text))
             ))
             
         return hits
