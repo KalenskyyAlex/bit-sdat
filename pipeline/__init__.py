@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, asdict
-from typing import List, Optional
+from typing import List, Literal, Optional, Union
 
 @dataclass
 class IocHit:
@@ -12,6 +12,8 @@ class IocHit:
 @dataclass
 class IocReport:
     hits: List[IocHit]
+    total_score: int
+    verdict: Union[Literal['low_risk'], Literal['medium_risk'], Literal['high_risk']]
 
 class Pipeline(ABC):
     @abstractmethod

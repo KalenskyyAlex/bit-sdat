@@ -43,6 +43,7 @@ def main():
         output = args.out if args.out else filename.with_suffix(".report.json")
         pdf = args.pdf
         
+        print(filename)
         AnalyzePipeline(filename, output, pdf).run()
     else:
         parser.print_help()

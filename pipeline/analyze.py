@@ -1,14 +1,14 @@
 from pathlib import Path
 import zipfile
 from . import Pipeline
-from file_pipelines.cfbf import CfbfPipeline
-from file_pipelines.pdf import PdfPipeline
-from file_pipelines.ooxml import OoxmlPipeline
-from pdf import GeneratePdfPipeline
+from .file_pipelines.cfbf import CfbfPipeline
+from .file_pipelines.pdf import PdfPipeline
+from .file_pipelines.ooxml import OoxmlPipeline
+from .pdf import GeneratePdfPipeline
 
 class AnalyzePipeline(Pipeline):
     def __init__(self, filename, output, pdf):
-        self.filename = filename,
+        self.filename = filename
         self.output = output
         self.pdf = pdf
     
