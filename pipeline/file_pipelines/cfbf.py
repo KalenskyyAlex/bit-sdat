@@ -1,12 +1,12 @@
 from typing import List
 from .. import IocHit, IocReport, Pipeline
-import sys, os, math, re
+import sys, os, re
 from . import aggregate_report, entrophy_scan, macro_scan, network_scan, obfuscation_scan
 import olefile
 
 
 class CfbfPipeline(Pipeline):
-    ENTROPY_THRESHHOLD = 7
+    ENTROPY_THRESHHOLD = 7.5
     RE_EMBED_EXE = re.compile(r'[\w\-\./ ]+\.(exe|dll|scr|bat|ps1|js|vbs)', re.IGNORECASE)
     RE_MZ = re.compile(br'MZ')   # binary search
     

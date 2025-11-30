@@ -1,5 +1,4 @@
 import os
-import pprint
 import sys
 from pypdf import PdfReader
 from typing import List, Set
@@ -9,7 +8,7 @@ from . import aggregate_report, entrophy_scan, js_scan, macro_scan, network_scan
 from pypdf.generic import IndirectObject, StreamObject, DictionaryObject
 
 class PdfPipeline(Pipeline):
-    ENTROPY_THRESHOLD = 7
+    ENTROPY_THRESHOLD = 7.5
     RE_EMBED_EXE = re.compile(r'[\w\-\./ ]+\.(exe|dll|scr|bat|ps1|js|vbs)', re.IGNORECASE)
     RE_MZ = re.compile(br'MZ')
 
@@ -17,7 +16,6 @@ class PdfPipeline(Pipeline):
         self.filename = filename
 
     def run(self) -> IocReport:
-        sys.setrecursionlimit(100)
         if not os.path.isfile(self.filename):
             print('ERROR: file not found:', self.filename, file=sys.stderr); sys.exit(2)
 
@@ -26,6 +24,8 @@ class PdfPipeline(Pipeline):
 
         for data in streams:
             stream_results += self.analyze_stream(data, self.ENTROPY_THRESHOLD)
+            
+        stream_results += self.analyze_raw(self.filename)
 
         return aggregate_report(stream_results)
     
@@ -72,6 +72,11 @@ class PdfPipeline(Pipeline):
             self.recursive_extract(obj, reader, streams, visited)
             
         return streams
+
+    def analyze_raw(self, path: str) -> List[IocHit]:
+        with open(path, 'r', encoding="utf-8", errors="replace") as f:
+            data = "\n".join(f.readlines())
+            return self.score_stream_texts(data)
 
     def analyze_stream(self, data: bytes, threshold: int) -> List[IocHit]:
         hits = []

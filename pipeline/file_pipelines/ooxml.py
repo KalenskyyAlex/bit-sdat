@@ -8,7 +8,7 @@ import zipfile
 from . import aggregate_report, entrophy_scan, macro_scan, network_scan, obfuscation_scan
 
 class OoxmlPipeline(Pipeline):
-    ENTROPY_THRESHHOLD = 7
+    ENTROPY_THRESHHOLD = 7.5
     RE_EMBED_EXE = re.compile(r'[\w\-\./ ]+\.(exe|dll|scr|bat|ps1|js|vbs)', re.IGNORECASE)
     RE_MZ = re.compile(br'MZ')   # binary search
     
