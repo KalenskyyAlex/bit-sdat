@@ -7,8 +7,11 @@ from .. import IocHit, IocReport
 RE_AUTO_MACRO = re.compile(r'\b(AutoOpen|AutoExec|Document_Open|Workbook_Open|Auto_Open)\b', re.IGNORECASE)
 RE_SHELL_CALL = re.compile(r'\b(CreateObject|ShellExecute|Shell\(|WScript\.|Run\(|cmd\.exe|powershell|mshta|osascript)\b', re.IGNORECASE)
 RE_URL = re.compile(r'https?://[^\s\'"<>]{5,}|ftp://[^\s\'"<>]{5,}', re.IGNORECASE)
-RE_IP = re.compile(r'\b(?:\d{1,3}\.){3}\d{1,3}\b')
-RE_BASE64_CAND = re.compile(r'(?:[A-Za-z0-9+/]{40,}={0,2})')
+RE_IP = re.compile(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', re.IGNORECASE)
+RE_BASE64_CAND = re.compile(r'(?:[a-z0-9+/]{40,}={0,2})', re.IGNORECASE)
+RE_JS_EXEC = re.compile(r'\b(eval|Function|this\.submitForm|app\.launchURL|util\.streamFromString)\b', re.IGNORECASE)
+RE_JS_OBFUSCATION = re.compile(r'(String\.fromCharCode|\\x[0-9a-f]{2}|atob|btoa|unescape|\+[\'"]|charCodeAt)', re.IGNORECASE)
+RE_JS_TRIGGERS = re.compile(r'\b(mouseDown|pageOpen|OpenAction|/JavaScript)\b', re.IGNORECASE)
 
 def entrophy_scan(data: bytes):
     if not data:
@@ -35,6 +38,35 @@ def macro_scan(text: str) -> List[IocHit]:
             description='Shell calls are detected',
             score=20,
             hits=len(RE_SHELL_CALL.findall(text))
+        ))
+        
+    return hits
+
+def js_scan(text: str) -> List[IocHit]:
+    hits = []
+    
+    if RE_JS_EXEC.search(text):
+        hits.append(IocHit(
+            name='js_exec',
+            description='Suspicious JS execution primitives detected',
+            score=40,
+            hits=len(RE_JS_EXEC.findall(text))
+        ))
+        
+    if RE_JS_OBFUSCATION.search(text):
+        hits.append(IocHit(
+            name='js_obfuscation',
+            description='Obfuscation patterns detected in JavaScript',
+            score=30,
+            hits=len(RE_JS_OBFUSCATION.findall(text))
+        ))
+        
+    if RE_JS_TRIGGERS.search(text):
+        hits.append(IocHit(
+            name='js_triggers',
+            description=f'PDF-triggered JavaScript hooks detected, {RE_JS_TRIGGERS.findall(text)}',
+            score=25,
+            hits=len(RE_JS_TRIGGERS.findall(text))
         ))
         
     return hits

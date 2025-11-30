@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 import zipfile
 from . import Pipeline
@@ -30,7 +31,7 @@ class AnalyzePipeline(Pipeline):
             GeneratePdfPipeline(self.output, content=report).run()
         else:
             with open(self.output, 'w') as f:
-                f.write(report)
+                json.dump(report.to_dict(), f, indent=4)
             
         return report    
     
