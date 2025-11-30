@@ -1,0 +1,78 @@
+{
+    "verdict": "low_risk",
+    "total_score": 35.046896007727945,
+    "hits": [
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.openxmlformats.org/package/2006/relationships', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings'], IPs: []",
+            "score": 15,
+            "hits": 5
+        },
+        {
+            "name": "base64_candidate",
+            "description": "Base64 candidates found (which could be a way to obfuscate content): ['org/officeDocument/2006/relationships/theme', 'org/officeDocument/2006/relationships/styles', 'org/officeDocument/2006/relationships/sharedStrings'], ...",
+            "score": 15,
+            "hits": 4
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.openxmlformats.org/officeDocument/2006/relationships', 'http://schemas.openxmlformats.org/spreadsheetml/2006/main', 'http://schemas.libreoffice.org/'], IPs: []",
+            "score": 15,
+            "hits": 3
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.openxmlformats.org/drawingml/2006/main', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'], IPs: []",
+            "score": 15,
+            "hits": 2
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.openxmlformats.org/spreadsheetml/2006/main'], IPs: []",
+            "score": 15,
+            "hits": 1
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.openxmlformats.org/officeDocument/2006/relationships', 'http://schemas.openxmlformats.org/spreadsheetml/2006/main', 'http://schemas.microsoft.com/office/spreadsheetml/2009/9/main', 'http://schemas.openxmlformats.org/markup-compatibility/2006', 'http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing', 'http://schemas.microsoft.com/office/spreadsheetml/2015/revision2'], IPs: []",
+            "score": 15,
+            "hits": 6
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.openxmlformats.org/spreadsheetml/2006/main'], IPs: []",
+            "score": 15,
+            "hits": 1
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument', 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties', 'http://schemas.openxmlformats.org/package/2006/relationships'], IPs: []",
+            "score": 15,
+            "hits": 4
+        },
+        {
+            "name": "base64_candidate",
+            "description": "Base64 candidates found (which could be a way to obfuscate content): ['org/package/2006/relationships/metadata/core', 'org/officeDocument/2006/relationships/extended', 'org/officeDocument/2006/relationships/officeDocument'], ...",
+            "score": 15,
+            "hits": 3
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.openxmlformats.org/package/2006/metadata/core-properties', 'http://purl.org/dc/terms/', 'http://purl.org/dc/dcmitype/', 'http://www.w3.org/2001/XMLSchema-instance', 'http://purl.org/dc/elements/1.1/'], IPs: []",
+            "score": 15,
+            "hits": 5
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.openxmlformats.org/officeDocument/2006/extended-properties', 'http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes'], IPs: ['24.8.7.2']",
+            "score": 15,
+            "hits": 3
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.openxmlformats.org/package/2006/content-types'], IPs: []",
+            "score": 15,
+            "hits": 1
+        }
+    ]
+}

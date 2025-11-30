@@ -1,0 +1,12 @@
+{
+    "verdict": "low_risk",
+    "total_score": 19.51544993495972,
+    "hits": [
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://www.iec.ch\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x16IEC', 'http://www.iec.ch\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00desc\\x00\\x00\\x00\\x00\\x00\\x00\\x00.IEC'], IPs: []",
+            "score": 15,
+            "hits": 2
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "verdict": "medium_risk",
+    "total_score": 59.51544993495972,
+    "hits": [
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://www.iec.ch\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00desc\\x00\\x00\\x00\\x00\\x00\\x00\\x00.IEC', 'http://www.iec.ch\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x16IEC'], IPs: []",
+            "score": 15,
+            "hits": 2
+        },
+        {
+            "name": "js_exec",
+            "description": "Suspicious JS execution primitives detected",
+            "score": 40,
+            "hits": 1
+        }
+    ]
+}

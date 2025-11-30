@@ -1,0 +1,78 @@
+{
+    "verdict": "medium_risk",
+    "total_score": 66.40007645479002,
+    "hits": [
+        {
+            "name": "base64_candidate",
+            "description": "Base64 candidates found (which could be a way to obfuscate content): ['0x01010027C5F2A8E850404A893F4AB49FD29F78'], ...",
+            "score": 15,
+            "hits": 1
+        },
+        {
+            "name": "embedded_PK_zip",
+            "description": "Document likely contains embedded CFBF/zip",
+            "score": 20,
+            "hits": 5
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.openxmlformats.org/drawingml/2006/main'], IPs: []",
+            "score": 15,
+            "hits": 1
+        },
+        {
+            "name": "shell_call",
+            "description": "Shell calls are detected",
+            "score": 20,
+            "hits": 1
+        },
+        {
+            "name": "embedded_filename",
+            "description": "Embedded filenames are detected: ['exe']",
+            "score": 40,
+            "hits": 1
+        },
+        {
+            "name": "embedded_filename",
+            "description": "Embedded filenames are detected: ['DLL']",
+            "score": 40,
+            "hits": 1
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.microsoft.com/sharepoint/v3/contenttype/forms'], IPs: []",
+            "score": 15,
+            "hits": 1
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.openxmlformats.org/officeDocument/2006/customXml', 'http://schemas.microsoft.com/sharepoint/v3/contenttype/forms'], IPs: []",
+            "score": 15,
+            "hits": 2
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.microsoft.com/office/2006/metadata/contentType', 'http://schemas.openxmlformats.org/package/2006/metadata/core-properties', 'http://schemas.microsoft.com/office/2006/metadata/properties', 'http://schemas.microsoft.com/office/2006/metadata/properties/metaAttributes', 'http://www.w3.org/2001/XMLSchema-instance', 'http://www.w3.org/2001/XMLSchema', 'http://purl.org/dc/terms/', 'http://dublincore.org/schemas/xmls/qdc/2003/04/02/dcterms.xsd', 'http://purl.org/dc/elements/1.1/', 'http://schemas.microsoft.com/office/infopath/2007/PartnerControls', 'http://dublincore.org/schemas/xmls/qdc/2003/04/02/dc.xsd', 'http://schemas.microsoft.com/internal/obd', 'http://schemas.microsoft.com/office/2006/documentManagement/types'], IPs: []",
+            "score": 15,
+            "hits": 26
+        },
+        {
+            "name": "base64_candidate",
+            "description": "Base64 candidates found (which could be a way to obfuscate content): ['com/office/2006/documentManagement/types', 'com/office/2006/metadata/properties/metaAttributes', '0x01010027C5F2A8E850404A893F4AB49FD29F78'], ...",
+            "score": 15,
+            "hits": 8
+        },
+        {
+            "name": "network_indicator",
+            "description": "Network indicators are detected: URLs: ['http://schemas.microsoft.com/office/2006/metadata/contentType', 'http://schemas.openxmlformats.org/officeDocument/2006/customXml', 'http://schemas.microsoft.com/office/2006/metadata/properties', 'http://schemas.openxmlformats.org/package/2006/metadata/core-properties', 'http://schemas.microsoft.com/office/2006/metadata/properties/metaAttributes', 'http://www.w3.org/2001/XMLSchema', 'http://purl.org/dc/terms/', 'http://purl.org/dc/elements/1.1/', 'http://schemas.microsoft.com/office/infopath/2007/PartnerControls', 'http://schemas.microsoft.com/internal/obd', 'http://schemas.microsoft.com/office/2006/documentManagement/types'], IPs: []",
+            "score": 15,
+            "hits": 11
+        },
+        {
+            "name": "base64_candidate",
+            "description": "Base64 candidates found (which could be a way to obfuscate content): ['com/office/2006/documentManagement/types', 'com/office/2006/metadata/properties/metaAttributes', 'com/office/infopath/2007/PartnerControls'], ...",
+            "score": 15,
+            "hits": 3
+        }
+    ]
+}
