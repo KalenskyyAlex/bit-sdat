@@ -40,8 +40,13 @@ def main():
         GeneratePdfPipeline(output, filename=filename).run()
     elif args.command == "analyze":
         filename = Path(*args.file)
-        output = args.out if args.out else filename.with_suffix(".report.json")
         pdf = args.pdf
+        output = ''
+        if pdf:
+            output = args.out if args.out else filename.with_suffix(".report.pdf")
+        else:
+            output = args.out if args.out else filename.with_suffix(".report.json")
+            
         
         AnalyzePipeline(filename, output, pdf).run()
     else:
