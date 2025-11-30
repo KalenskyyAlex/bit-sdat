@@ -103,8 +103,10 @@ def obfuscation_scan(text: str) -> List[IocHit]:
     return hits
 
 def aggregate_report(stream_results: List[IocHit]) -> IocReport:
+    compressed_results = compress_hits(stream_results)
+    
     total_score = 0
-    for s in stream_results:
+    for s in compressed_results:
         total_score += s.score * math.log10(s.hits)
         
     report = {
@@ -121,3 +123,25 @@ def aggregate_report(stream_results: List[IocHit]) -> IocReport:
         report['verdict'] = 'low_risk'
         
     return IocReport(**report)
+
+def compress_hits(stream_results: List[IocHit]) -> List[IocHit]:
+    """
+    Merge hits of the same type into one, summing `hits` and taking max score.
+    Description is ignored.
+    """
+    merged = {}
+    
+    for hit in stream_results:
+        if hit.name in merged:
+            merged_hit = merged[hit.name]
+            merged_hit.hits += hit.hits
+            merged_hit.score = max(merged_hit.score, hit.score)  # optional: keep max score
+        else:
+            # copy hit (avoid mutating original)
+            merged[hit.name] = IocHit(
+                name=hit.name,
+                description="",  # ignore description
+                score=hit.score,
+                hits=hit.hits
+            )
+    return list(merged.values())
